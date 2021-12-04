@@ -112,10 +112,7 @@ impl BingoBoard {
         for i in 0..5 {
             bingo = self.check_row(i) || bingo;
             bingo = self.check_column(i) || bingo;
-        }
-        bingo = self.check_diagonal_1() || bingo; 
-        bingo = self.check_diagonal_2() || bingo;
-        
+        }        
         bingo
     }
 
@@ -137,27 +134,6 @@ impl BingoBoard {
         bingo
     }
 
-    //check if diagonal has bingo
-    fn check_diagonal_1(&self) -> bool {
-        let mut bingo = true;
-        for i in 0..5 {
-            bingo = self.is_called[i][i] && bingo;
-        }
-        bingo
-    }
-
-    //check if diagonal has bingo
-    fn check_diagonal_2(&self) -> bool {
-        let mut bingo = true;
-        for i in 0..5 {
-            bingo = self.is_called[i][4-i] && bingo;
-        }
-        bingo
-    }
-
-
-    
-
     //mark a number on the board if exists
     fn mark(&mut self, number: i32) -> bool {
         for i in 0..5 {
@@ -170,7 +146,6 @@ impl BingoBoard {
         }
         false
     }
-
 
     //prints the board
     fn print(&self) {
