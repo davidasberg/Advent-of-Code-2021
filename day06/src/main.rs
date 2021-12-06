@@ -15,8 +15,7 @@ fn part_two(days: i32) {
     println!("Day 0: {:?}", phases);
     for i in 1..days+1 {
         let phase_0 = phases[0];
-        phases[0] = phases[1];
-        for i in 1..phases.len()-1 {
+        for i in 0..phases.len()-1 {
             phases[i] = phases[i+1];
         } 
         phases[8] = phase_0;
