@@ -13,14 +13,14 @@ fn part_two(days: i32) {
         phases[f as usize] += 1;
     }
     println!("Day 0: {:?}", phases);
-    for i in 1..days+1 {
+    for day in 1..days+1 {
         let phase_0 = phases[0];
         for i in 0..phases.len()-1 {
             phases[i] = phases[i+1];
         } 
         phases[8] = phase_0;
         phases[6] += phase_0;
-        println!("Day {}: {:?}", i, phases);
+        println!("Day {}: {:?}", day, phases);
     }
 
     println!("{}", phases.iter().sum::<i64>());
