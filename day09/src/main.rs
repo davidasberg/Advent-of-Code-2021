@@ -56,9 +56,6 @@ fn get_basin_size(grid: &Vec<Vec<i32>>, i: usize, j: usize) -> i32 {
         let (i, j) = queue.pop().unwrap();
         basin_size += 1;
 
-        if grid[i][j] == 9 {
-            return basin_size;
-        }
 
         let neighbors = get_neighbors(grid, i, j);
 
@@ -71,10 +68,6 @@ fn get_basin_size(grid: &Vec<Vec<i32>>, i: usize, j: usize) -> i32 {
     }
     basin_size
 }
-
-
-
-
 
 fn part_one() {
     //read input from file to string
@@ -146,7 +139,6 @@ fn get_local_min(grid: &Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     for row in 0..grid.len() {
         for col in 0..grid[row].len() {
             let neighbor_values = get_neighbor_values(grid, row, col);
-
             if grid[row][col] < *neighbor_values.iter().min().unwrap() {
                 local_min[row][col] = 1;
             }
