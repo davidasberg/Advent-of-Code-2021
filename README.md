@@ -1,6 +1,8 @@
 # Advent-of-Code-2021
 My solutions to Advent of Code 2021
 
+They are done in Rust as an attempt to learn the language, so most solutions might be quite *ugly*
+
 
 [Day 1](day1/README.md)
 [Day 2](day2/README.md)
