@@ -9,7 +9,7 @@ fn main() {
 
 fn part_one() {
     //read input from file 
-    let input = fs::read_to_string("input2.txt").expect("Error reading file");
+    let input = fs::read_to_string("input.txt").expect("Error reading file");
     let edges = input.trim().split("\n").collect::<Vec<&str>>();
     let mut graph = Graph::new();
     for edge in edges {
@@ -18,7 +18,7 @@ fn part_one() {
         let node2 = edge[1].to_string();
         let is_small1 = node1 == node1.to_lowercase();
         let is_small2 = node2 == node2.to_lowercase();
-        graph.add_edge(Node::new(node1,is_small1), Node::new(node2,is_small2));
+        graph.add_double_edge(Node::new(node1,is_small1), Node::new(node2,is_small2));
     }
     let paths = graph.get_paths(graph.get_node("start").unwrap().clone(), graph.get_node("end").unwrap().clone());
     println!("{}", paths.len());
@@ -47,6 +47,13 @@ impl Graph {
         self.add_node(node2.clone());
         self.nodes.get_mut(&node1).unwrap().push(node2);
     }
+    
+    fn add_double_edge(&mut self, node1: Node, node2: Node) {
+        self.add_node(node1.clone());
+        self.add_node(node2.clone());
+        self.nodes.get_mut(&node1).unwrap().push(node2.clone());
+        self.nodes.get_mut(&node2).unwrap().push(node1.clone());
+    }
 
     fn get_neighbors(&self, node: &Node) -> &Vec<Node> {
         self.nodes.get(node).unwrap()
@@ -60,26 +67,31 @@ impl Graph {
     //can only visit small node once and large nodes can be visited multiple times
     fn get_paths(&self, start: Node, end: Node) -> Vec<Vec<Node>> {
         let mut paths: Vec<Vec<Node>> = Vec::new();
-        let mut visited = HashMap::new();
+        let mut visited: Vec<HashMap<Node, bool>> = Vec::new();
         let mut stack = Vec::new();
         let mut complete_paths: Vec<Vec<Node>> = Vec::new();
 
         paths.push(vec![start.clone()]);
         stack.push(start.clone());
-        visited.insert(start.clone(), true);
+        let mut map = HashMap::new();
+        map.insert(start.clone(), true);
+        visited.push(map.clone());
         while !stack.is_empty() {
             let node = stack.pop().unwrap();
-            let mut path = paths.pop().unwrap();
+            let path = paths.pop().unwrap();
+            let visited_map = visited.pop().unwrap();
             if node == end {
-                path.push(node.clone());
                 complete_paths.push(path);
             } else {
                 for neighbor in self.get_neighbors(&node) {
-                    if !neighbor.is_small || (neighbor.is_small && !visited.contains_key(&neighbor)) {
-                        visited.insert(neighbor.clone(), true);
+                    if !neighbor.is_small || (neighbor.is_small && !visited_map.contains_key(&neighbor)) {
+                        let mut new_visited_map = visited_map.clone();
+                        new_visited_map.insert(neighbor.clone(), true);
+                        visited.push(new_visited_map);
                         stack.push(neighbor.clone());
-                        path.push(neighbor.clone());
-                        paths.push(path.clone());
+                        let mut extended_path = path.clone();
+                        extended_path.push(neighbor.clone());
+                        paths.push(extended_path);
                     }
                 }
             }
