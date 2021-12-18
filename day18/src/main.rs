@@ -1,9 +1,9 @@
 
 
-//solution heavily inspired by u/Chaosteil 
+//solution HEAVILY inspired by u/Chaosteil (almost all code is his by this point) 
 //had a very similar solution to begin with,
 //but it was a bit more complicated than I thought it would be
-//and I used his solution to fix my own
+//and I used his solution to fix my own instead of burning hours with my bugs
 
 
 use std::fs;
