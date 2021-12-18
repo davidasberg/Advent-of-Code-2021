@@ -10,10 +10,10 @@ fn part_one_and_two() {
     let (x_min, x_max, y_min, y_max) = get_input("input.txt");
 
     // Find the initial velocity that causes the probe to reach the highest y position and still eventually be within the target area after any step. What is the highest y position it reaches on this trajectory?
-    let max_vel_y = -y_min - 1;
+    
     let mut max_y = 0;
     let mut hits = 0;
-    for vel_y in y_min..=max_vel_y {
+    for vel_y in y_min..-y_min {
         for vel_x in 1..x_max+1 {
             let mut x = 0;
             let mut y = 0;
