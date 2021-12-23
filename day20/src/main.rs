@@ -8,6 +8,7 @@ type Image = HashMap<(i32,i32),bool>;
 
 fn main() {
     part_one();
+    part_two();
 }
 
 fn get_input(file: &str) -> (ImageAlg, Image) {
@@ -37,17 +38,20 @@ fn part_one() {
     println!("{}", count_pixels(&image));
 }
 
+fn part_two() {
+    let (image_alg, mut image) = get_input("input.txt");
+    image = enhance_picture(&image_alg, &image, 50);
+    println!("{}", count_pixels(&image));
+}
+
 fn count_pixels(image: &Image) -> i32 {
     //count keys in hashmap that are true
     image.iter().filter(|(_, &v)| v).count() as i32
 }
 
 fn enhance_picture(image_alg: &ImageAlg, image: &Image, steps: i32) -> Image {
-    //create copy of image with 1 extra element in each direction
     let mut image = image.clone();
-    print_image(&image);
-    //get min and max x and y values
-    
+   
     for i in 0..steps {
         let mut improved_image: Image = HashMap::new();
         let (mut min, mut max) = (std::i32::MAX,std::i32::MIN);
@@ -65,21 +69,7 @@ fn enhance_picture(image_alg: &ImageAlg, image: &Image, steps: i32) -> Image {
                 improved_image.insert((x, y), pixel_value);
             }
         }
-
-        // let edges = vec![min-3, min-2, max+2, max+3];
-        // if i%2 == 0 {
-        //     for y in min-3..max+3{
-        //         for x in 0..edges.len() {
-        //             improved_image.insert((edges[x], y), true);
-        //             improved_image.insert((y, edges[x]), true);
-        //         }
-        //     }
-        // }
-        
-       
-    
         image = improved_image;
-        print_image(&image);
     }
     image
 }
@@ -137,19 +127,7 @@ mod tests {
         assert_eq!(vec![(0,0),(1,0),(2,0),(0,1),(1,1),(2,1),(0,2),(1,2),(2,2)], get_neighbors((1,1)));
     }
 
-    #[test]
-    fn binary_from_neighbors_test() {
-        //create set with (0..2,0..2) as false
-        let mut image = HashMap::new();
-        for y in 0..2 {
-            for x in 0..2 {
-                image.insert((x,y), false);
-            }
-        }
-        //set to true
-        image.insert((0,0), true);
-        assert_eq!(0b100000000, binary_from_neighbors(vec![(0,0),(1,0),(2,0),(0,1),(1,1),(2,1),(0,2),(1,2),(2,2)], &image));
-    }
+
 
     #[test]
     fn example_test() {
